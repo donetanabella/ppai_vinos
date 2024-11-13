@@ -1,9 +1,8 @@
 import sqlite3
-
-from clases.DAO.BodegaDAO import BodegaDAO
-from clases.DAO.ResenaDAO import ResenaDAO
-from clases.DAO.VarietalDAO import VarietalDAO
-from clases.entities.Vino import Vino
+from DAO.BodegaDAO import BodegaDAO
+from DAO.ResenaDAO import ResenaDAO
+from DAO.VarietalDAO import VarietalDAO
+from Entities.Vino import Vino
 
 
 class VinoDAO:

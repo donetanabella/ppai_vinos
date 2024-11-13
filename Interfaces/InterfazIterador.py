@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+
 class InterfazIterador(ABC):
     @abstractmethod
     def __init__(self):
@@ -15,7 +16,7 @@ class InterfazIterador(ABC):
         pass
     
     @abstractmethod
-    def haTerminado(self):
+    def ha_terminado(self):
         pass
     
     @abstractmethod
@@ -23,7 +24,6 @@ class InterfazIterador(ABC):
         pass
     
     @abstractmethod
-    def cumpleFiltros(self, filtros: List[object]):
+    def cumple_filtros(self, filtros: List[object]):
         pass
-    
     

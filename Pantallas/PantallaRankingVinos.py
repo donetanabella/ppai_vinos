@@ -10,8 +10,8 @@ class PantallaRankingVinos:
     def __init__(self):
         self.confirmacion = None
         self.gestor = None
-        self.fechaDesde = None
-        self.fechaHasta = None
+        self.fecha_desde = None
+        self.fecha_hasta = None
         self.habilitado = False
         self.ventana = tk.Tk()
         self.ventana.state("zoomed")  # Maximiza la ventana
@@ -27,7 +27,7 @@ class PantallaRankingVinos:
         # Configura el estilo para los labels (etiquetas)
         style.configure("TLabel", background="#4B1F1F", foreground="#FFFFFF", font=("Helvetica", 14))
         # Configura el estilo para los botones
-        style.configure("TButton", background="#F5E9DC", foreground="#FFFFFF", font=("Helvetica", 12), padding=10)
+        style.configure("TButton", background="#F5E9DC", foreground="black", font=("Helvetica", 12), padding=10)
         # Configura el estilo para los campos de entrada (Entry)
         style.configure("TEntry", padding=5, font=("Helvetica", 12))
         # Configura el estilo para los frames (contenedores)
@@ -54,13 +54,13 @@ class PantallaRankingVinos:
 
         self.icono_calendario = ImageTk.PhotoImage(icono_calendario)
         self.boton_calendario_desde = ttk.Button(frame_fecha_desde, image=self.icono_calendario,
-                                                 command=lambda: self.abrirCalendario("desde"))
+                                                 command=lambda: self.abrir_calendario("desde"))
         self.boton_calendario_desde.grid(row=0, column=2, padx=10)  # Coloca el botón en el frame
 
         # Creación de un calendario para la fecha desde
         self.calendar_fecha_desde = Calendar(self.ventana, selectmode="day", date_pattern="dd/MM/yyyy")
         self.calendar_fecha_desde.bind("<<CalendarSelected>>",
-                                       self.tomarSeleccionFechaDesde)  # Vincula el evento de selección del
+                                       self.tomar_seleccion_fecha_desde)  # Vincula el evento de selección del
         # calendario a la función correspondiente
 
         # Creación de un frame para la fecha hasta
@@ -75,13 +75,13 @@ class PantallaRankingVinos:
 
         # Creación de un botón con un icono de calendario para la fecha hasta
         self.boton_calendario_hasta = ttk.Button(frame_fecha_hasta, image=self.icono_calendario,
-                                                 command=lambda: self.abrirCalendario("hasta"))
+                                                 command=lambda: self.abrir_calendario("hasta"))
         self.boton_calendario_hasta.grid(row=0, column=2, padx=10)  # Coloca el botón en el frame
 
         # Creación de un calendario para la fecha hasta
         self.calendar_fecha_hasta = Calendar(self.ventana, selectmode="day", date_pattern="dd/MM/yyyy")
         self.calendar_fecha_hasta.bind("<<CalendarSelected>>",
-                                       self.tomarSeleccionFechaHasta)  # Vincula el evento de selección del calendario
+                                       self.tomar_seleccion_fecha_hasta)  # Vincula el evento de selección del calendario
         # a la función correspondiente
 
         # Creación de label para mostrar el error
@@ -101,24 +101,23 @@ class PantallaRankingVinos:
         self.label_listbox.pack(side=tk.LEFT, padx=10)  # Coloca el label en el frame
 
         # Creación del ListBox con los tipos de reportes
-        self.tipoResena = ttk.Combobox(self.frame_listbox, values=[], state="readonly")
-        self.tipoResena.pack(side=tk.LEFT, padx=10)
+        self.tipo_resenia = ttk.Combobox(self.frame_listbox, values=[], state="readonly")
+        self.tipo_resenia.pack(side=tk.LEFT, padx=10)
 
         # Creación de un label para el ListBox para Tipos Visualizacion
         self.label_listbox = ttk.Label(self.frame_listbox, text="Seleccione el tipo de visualizacion:")
         self.label_listbox.pack(side=tk.LEFT, padx=10)  # Coloca el label en el frame
 
         # Creación del ListBox con los tipos de reportes
-        self.tipoVisualizacion = ttk.Combobox(self.frame_listbox, values=[], state="readonly")
-        self.tipoVisualizacion.pack(side=tk.LEFT, padx=10)
+        self.tipo_visualizacion = ttk.Combobox(self.frame_listbox, values=[], state="readonly")
+        self.tipo_visualizacion.pack(side=tk.LEFT, padx=10)
 
         # Creación de botón para generar ranking
-        self.boton_generar_ranking = ttk.Button(self.ventana, text="Generar Ranking", command=self.opcionGenerarRanking)
+        self.boton_generar_ranking = ttk.Button(self.ventana, text="Generar Ranking", command=self.opcion_generar_ranking)
         self.boton_generar_ranking.pack(pady=20)  # Coloca el botón debajo de los combobox
 
-
-    def abrirCalendario(self, fecha):
-        self.ocultarCalendarios()
+    def abrir_calendario(self, fecha):
+        self.ocultar_calendarios()
         boton = self.boton_calendario_desde if fecha == "desde" else self.boton_calendario_hasta
         x = boton.winfo_rootx() - self.ventana.winfo_rootx()
         y = boton.winfo_rooty() - self.ventana.winfo_rooty() + 30
@@ -130,90 +129,90 @@ class PantallaRankingVinos:
             self.calendar_fecha_hasta.place(x=x, y=y)
             self.calendar_fecha_hasta.lift()
 
-    def ocultarCalendarios(self):
+    def ocultar_calendarios(self):
         self.calendar_fecha_desde.place_forget()
         self.calendar_fecha_hasta.place_forget()
 
-    def opcionGenerarRanking(self):
+    def opcion_generar_ranking(self):
         if self.ventana.winfo_exists() and self.habilitado:
-            return self.gestor.opcionGenerarRankingVinos()
-        self.habilitarVentana()
-        return self.gestor.opcionGenerarRankingVinos()
+            return self.gestor.opcion_generar_ranking_vinos()
+        self.habilitar_ventana()
+        return self.gestor.opcion_generar_ranking_vinos()
 
-    def habilitarVentana(self):
+    def habilitar_ventana(self):
         self.habilitado = True
         return self.ventana.mainloop()
 
-    def pedirSeleccionFechas(self):
-        fechaDesde = self.tomarSeleccionFechaDesde()
-        fechaHasta = self.tomarSeleccionFechaHasta()
+    def pedir_seleccion_fechas(self):
+        fecha_desde = self.tomar_seleccion_fecha_desde()
+        fecha_hasta = self.tomar_seleccion_fecha_hasta()
 
-        if not self.validarPeriodo(fechaDesde, fechaHasta):
-            self.pedirSeleccionFechas()
-        return self.gestor.tomarSeleccionFechaDesdeyHasta(fechaDesde, fechaHasta)
+        if not self.validar_periodo(fecha_desde, fecha_hasta):
+            self.pedir_seleccion_fechas()
+        return self.gestor.tomar_seleccion_fecha_desde_y_hasta(fecha_desde, fecha_hasta)
 
-    def tomarSeleccionFechaDesde(self, event=None):
+    def tomar_seleccion_fecha_desde(self, event=None):
         fecha_str = self.calendar_fecha_desde.get_date()
         fecha = datetime.strptime(fecha_str, "%d/%m/%Y")
         self.entry_fecha_desde.delete(0, tk.END)
         self.entry_fecha_desde.insert(0, fecha.strftime("%d/%m/%Y"))
-        self.fechaDesde = fecha
-        self.ocultarCalendarios()
+        self.fecha_desde = fecha
+        self.ocultar_calendarios()
         return fecha
 
-    def tomarSeleccionFechaHasta(self, event=None):
+    def tomar_seleccion_fecha_hasta(self, event=None):
         fecha_str = self.calendar_fecha_hasta.get_date()
         fecha = datetime.strptime(fecha_str, "%d/%m/%Y")
-        if self.fechaDesde:
-            if not self.validarPeriodo(self.fechaDesde, fecha):
+        if self.fecha_desde:
+            if not self.validar_periodo(self.fecha_desde, fecha):
                 self.label_error.config(text="La fecha hasta debe ser mayor que la fecha desde")
                 return None
         self.label_error.config(text="")
         self.entry_fecha_hasta.delete(0, tk.END)
         self.entry_fecha_hasta.insert(0, fecha.strftime("%d/%m/%Y"))
-        self.fechaHasta = fecha
-        self.ocultarCalendarios()
+        self.fecha_hasta = fecha
+        self.ocultar_calendarios()
         self.label_error.config(text="")
         return fecha
 
-    def validarPeriodo(self, fechaDesde, fechaHasta):
-        if fechaDesde >= fechaHasta:
+    def validar_periodo(self, fecha_desde, fecha_hasta):
+        if fecha_desde >= fecha_hasta:
             self.label_error.config(text="La fecha hasta debe ser mayor que la fecha desde")
             return False
         self.label_error.config(text="")
-        self.mostrarListBoxTipoReportes()  # Muestra el listbox con los tipos de reportes
+        self.mostrar_list_box_tipo_reportes()  # Muestra el listbox con los tipos de reportes
         return True
 
-    def setGestor(self, gestor):
+    def set_gestor(self, gestor):
         self.gestor = gestor
-        self.tipoResena['values'] = self.gestor.tipoReportes
-        self.tipoResena.current(0)  # Selecciona el primer elemento de la lista
-        self.tipoVisualizacion['values'] = self.gestor.tipoVisualizacion
-        self.tipoVisualizacion.current(0)  # Selecciona el primer elemento de la lista
+        self.tipo_resenia['values'] = self.gestor.tipo_reportes
+        self.tipo_resenia.current(0)  # Selecciona el primer elemento de la lista
+        self.tipo_visualizacion['values'] = self.gestor.tipo_visualizacion
+        self.tipo_visualizacion.current(0)  # Selecciona el primer elemento de la lista
 
-    def solicitarTipoResena(self):
-        return self.tomarSeleccionTipoResena()
+    def solicitar_tipo_resenia(self):
+        return self.tomar_seleccion_tipo_resenia()
 
-    def tomarSeleccionTipoResena(self):
-        tipoResena = self.tipoResena.get()  # Corregido a get()
-        return self.gestor.tomarSeleccionTipoResena(tipoResena)
+    def tomar_seleccion_tipo_resenia(self):
+        tipo_resena = self.tipo_resenia.get()  # Corregido a get()
+        return self.gestor.tomar_seleccion_tipo_resenia(tipo_resena)
 
-    def solicitarFormatoDelReporte(self):
-        return self.tomarFormatoDelReporte()
+    def solicitar_formato_del_reporte(self):
+        return self.tomar_formato_del_reporte()
 
-    def tomarFormatoDelReporte(self):
-        tipoVisualizacion = self.tipoVisualizacion.get()  # Corregido a get()
-        return self.gestor.tomarFormatoDelReporte(tipoVisualizacion)
+    def tomar_formato_del_reporte(self):
+        tipo_visualizacion = self.tipo_visualizacion.get()  # Corregido a get()
+        return self.gestor.tomar_formato_del_reporte(tipo_visualizacion)
 
-    def mostrarListBoxTipoReportes(self):
+    def mostrar_list_box_tipo_reportes(self):
         self.frame_listbox.pack(pady=10, padx=20)  # Coloca el frame en la ventana
         return
 
-    def mostrarListBoxTiposVisualizacion(self):
+    def mostrar_list_box_tipos_visualizacion(self):
         self.frame_listbox.pack(pady=10, padx=20)  # Coloca el frame en la ventana
         return
 
-    def solicitarConfirmacionReporte(self):
+    def solicitar_confirmacion_reporte(self):
         # Crear una nueva ventana
         confirm_window = tk.Toplevel(self.ventana)
         confirm_window.title("Confirmar selección")
@@ -238,13 +237,13 @@ class PantallaRankingVinos:
         frame.pack(fill=tk.BOTH, expand=True)
 
         # Mostrar las fechas seleccionadas, tipo de reseña y tipo de visualización
-        ttk.Label(frame, text=f"Fecha Desde: {self.fechaDesde.strftime('%d/%m/%Y')}").grid(row=0, column=0, pady=5,
-                                                                                           sticky=tk.W)
-        ttk.Label(frame, text=f"Fecha Hasta: {self.fechaHasta.strftime('%d/%m/%Y')}").grid(row=1, column=0, pady=5,
-                                                                                           sticky=tk.W)
-        ttk.Label(frame, text=f"Tipo de Reseña: {self.tipoResena.get()}").grid(row=2, column=0, pady=5, sticky=tk.W)
-        ttk.Label(frame, text=f"Tipo de Visualización: {self.tipoVisualizacion.get()}").grid(row=3, column=0, pady=5,
-                                                                                             sticky=tk.W)
+        ttk.Label(frame, text=f"Fecha Desde: {self.fecha_desde.strftime('%d/%m/%Y')}").grid(row=0, column=0, pady=5,
+                                                                                            sticky=tk.W)
+        ttk.Label(frame, text=f"Fecha Hasta: {self.fecha_hasta.strftime('%d/%m/%Y')}").grid(row=1, column=0, pady=5,
+                                                                                            sticky=tk.W)
+        ttk.Label(frame, text=f"Tipo de Reseña: {self.tipo_resenia.get()}").grid(row=2, column=0, pady=5, sticky=tk.W)
+        ttk.Label(frame, text=f"Tipo de Visualización: {self.tipo_visualizacion.get()}").grid(row=3, column=0, pady=5,
+                                                                                              sticky=tk.W)
 
         # Crear una variable para almacenar la confirmación del usuario
         self.confirmacion = tk.BooleanVar()
@@ -254,27 +253,27 @@ class PantallaRankingVinos:
         button_frame.grid(row=4, column=0, pady=20)
 
         tk.Button(button_frame, text="Confirmar",
-                  command=lambda: self.tomarConfirmacion(True, confirm_window),
+                  command=lambda: self.tomar_confirmacion(True, confirm_window),
                   bg='green', fg='white').grid(row=0, column=0, padx=10)
         tk.Button(button_frame, text="Cancelar",
-                  command=lambda: self.tomarConfirmacion(False, confirm_window),
+                  command=lambda: self.tomar_confirmacion(False, confirm_window),
                   bg='red', fg='white').grid(row=0, column=1, padx=10)
 
         # Esperar a que el usuario cierre la ventana de confirmación antes de retornar la confirmación
         self.ventana.wait_window(confirm_window)
         return self.confirmacion.get()
 
-    def tomarConfirmacion(self, confirmacion, window):
+    def tomar_confirmacion(self, confirmacion, window):
         # Set the confirmation and close the confirmation window
         self.confirmacion.set(confirmacion)
         window.destroy()
         if confirmacion:
-            self.gestor.tomarConfirmacionReporte(confirmacion)
+            self.gestor.tomar_confirmacion_reporte(confirmacion)
         
-    def getVentana(self):
+    def get_ventana(self):
         return self.ventana
     
-    def abrirPDF(self):
+    def abrir_PDF(self):
         """
         Muestra una ventana de confirmación para abrir el archivo PDF generado.
         """
@@ -312,18 +311,18 @@ class PantallaRankingVinos:
         button_frame.grid(row=4, column=0, pady=20)
 
         tk.Button(button_frame, text="Confirmar",
-                  command=lambda: self.tomarConfirmacionArchivo(True, confirm_window),
+                  command=lambda: self.tomar_confirmacion_archivo(True, confirm_window),
                   bg='green', fg='white').grid(row=0, column=0, padx=10)
 
         tk.Button(button_frame, text="Cancelar",
-                  command=lambda: self.tomarConfirmacionArchivo(False, confirm_window),
+                  command=lambda: self.tomar_confirmacion_archivo(False, confirm_window),
                   bg='red', fg='white').grid(row=0, column=1, padx=10)
 
         # Esperar a que el usuario cierre la ventana de confirmación antes de retornar la confirmación
         self.ventana.wait_window(confirm_window)
-        return self.tomarConfirmacionArchivo
+        return self.tomar_confirmacion_archivo
 
-    def tomarConfirmacionArchivo(self, confirmacion, window):
+    def tomar_confirmacion_archivo(self, confirmacion, window):
         """
         Toma la confirmación del usuario y abre el archivo PDF si se confirma.
         """

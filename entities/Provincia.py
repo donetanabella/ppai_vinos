@@ -1,8 +1,12 @@
-from Pais import Pais
+from Entities.Pais import Pais
 
 
 class Provincia:
     _provincias_instance = {}
+
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._provincias_instance.clear()
 
     def __new__(cls, id: int, nombre: str, pais: Pais):
         # Si la provincia ya existe por ID, devolver la instancia existente

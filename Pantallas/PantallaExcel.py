@@ -6,9 +6,9 @@ import tkinter as tk
 
 
 class PantallaExcel:
-    def __init__(self, infoVinos, puntajeVinos):
-        self.infoVinos = infoVinos
-        self.puntajeVinos = puntajeVinos
+    def __init__(self, info_vinos, puntaje_vinos):
+        self.info_vinos = info_vinos
+        self.puntaje_vinos = puntaje_vinos
         self.confirmacion = None
         self.ventana = None
         self.generarExcel()
@@ -16,7 +16,7 @@ class PantallaExcel:
     def generarExcel(self):
         data = {'Nombre Vino': [], 'Precio Vino': [], 'Info Bodega': [], 'Ubicacion Bodega': [], 'Varietal': [],
                 'Puntaje': []}
-        for vino, puntaje in zip(self.infoVinos, self.puntajeVinos):
+        for vino, puntaje in zip(self.info_vinos, self.puntaje_vinos):
             data['Nombre Vino'].append(vino[0])
             data['Precio Vino'].append(vino[1])
             data['Info Bodega'].append(str(vino[2][0]))
@@ -27,12 +27,12 @@ class PantallaExcel:
         df = pd.DataFrame(data)
         df.to_excel('ranking_vinos.xlsx', index=False)
 
-    def abrirExcel(self, pantalla):
+    def abrir_excel(self, pantalla):
         """
         Muestra una ventana de confirmación para abrir el archivo PDF generado.
         """
         # Crear una nueva ventana de confirmación
-        self.ventana = pantalla.getVentana()
+        self.ventana = pantalla.get_ventana()
         confirm_window = tk.Toplevel(self.ventana)
         confirm_window.title("Abrir Excel Generado")
 
@@ -66,24 +66,24 @@ class PantallaExcel:
         button_frame.grid(row=4, column=0, pady=20)
 
         tk.Button(button_frame, text="Confirmar",
-                  command=lambda: self.tomarConfirmacionArchivo(True, confirm_window),
+                  command=lambda: self.tomar_confirmacion_archivo(True, confirm_window),
                   bg='green', fg='white').grid(row=0, column=0, padx=10)
         tk.Button(button_frame, text="Cancelar",
-                  command=lambda: self.tomarConfirmacionArchivo(False, confirm_window),
+                  command=lambda: self.tomar_confirmacion_archivo(False, confirm_window),
                   bg='red', fg='white').grid(row=0, column=1, padx=10)
 
-    def tomarConfirmacionArchivo(self, confirmacion, window):
+    def tomar_confirmacion_archivo(self, confirmacion, window):
 
         """
         Toma la confirmación del usuario y abre el archivo PDF si se confirma.
         """
         window.destroy()
-        rutaExcel = os.path.abspath("./ranking_vinos.xlsx")
+        ruta_excel = os.path.abspath("./ranking_vinos.xlsx")
         if confirmacion:
             # Verificar si el archivo existe
-            if os.path.exists(rutaExcel):
+            if os.path.exists(ruta_excel):
                 # Abrir el archivo PDF con el programa predeterminado del sistema
-                os.startfile(rutaExcel)
+                os.startfile(ruta_excel)
             else:
                 print("Operación cancelada.")
                 return

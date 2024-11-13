@@ -1,6 +1,6 @@
 import sqlite3
-from clases.entities.Varietal import Varietal
-from clases.entities.Vino import Vino
+from Entities.Varietal import Varietal
+from Entities.Vino import Vino
 
 
 class VarietalDAO:
@@ -11,6 +11,7 @@ class VarietalDAO:
         return sqlite3.connect(self.db_path)
 
     def cargar_por_vino(self, vino: Vino):
+        Varietal.limpiar_instancias()
         conn = self.conectar()
         cursor = conn.cursor()
 
@@ -18,8 +19,8 @@ class VarietalDAO:
         cursor.execute('''
             SELECT var.id, var.descripcion 
             FROM Varietales var
-            JOIN varietal_x_vino vxv ON var.id = vxv.varietal_id
-            WHERE vxv.vino_id = ?
+            JOIN varietales_x_vino vxv ON var.id = vxv.id_varietal
+            WHERE vxv.id_vino = ?
         ''', (vino.id,))
 
         rows = cursor.fetchall()
@@ -29,6 +30,6 @@ class VarietalDAO:
         for row in rows:
             varietal = Varietal(row[0], row[1])
             varietales.append(varietal)
-            vino.varietales.append(varietal)
+            vino.varietales.add(varietal)
 
         return varietales

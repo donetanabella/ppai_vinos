@@ -1,7 +1,7 @@
-from clases.PantallaExcel import PantallaExcel
+from Pantallas.PantallaExcel import PantallaExcel
 from fpdf import FPDF
-from clases.InterfazAgregado import InterfazAgregado
-from clases.IteradorVinos import *
+from Interfaces.InterfazAgregado import InterfazAgregado
+from Interfaces.IteradorVinos import *
 
 # sisi el modelo de analisis lo tiene como atributo del gestor
 
@@ -11,27 +11,27 @@ class GestorRankingVinos(InterfazAgregado):
         # Atributos de la clase
         self.confirmacion = None
         self.pantalla = None  # Objeto de la clase Pantalla
-        self.listaVinos = None  # Lista de objetos de la clase Vino
-        self.fechaDesde = None  # DateTime
-        self.fechaHasta = None  # DateTime
-        self.infoVinos = []
-        self.infoVinosOrdenados = None
-        self.puntajeVinos = []
-        self.tipoReportes = ["Premium", "Normales", "Amigos"]
-        self.tipoReporteSeleccionado = None
-        self.tipoVisualizacion = ["PDF", "Excel"]
-        self.puntajeVinos = []
-        self.pantallaExcel = None
+        self.lista_vinos = None  # Lista de objetos de la clase Vino
+        self.fecha_desde = None  # DateTime
+        self.fecha_hasta = None  # DateTime
+        self.info_vinos = []
+        self.info_vinos_ordenados = None
+        self.puntaje_vinos = []
+        self.tipo_reportes = ["Premium", "Normales", "Amigos"]
+        self.tipo_reporte_seleccionado = None
+        self.tipo_visualizacion = ["PDF", "Excel"]
+        self.puntaje_vinos = []
+        self.pantalla_excel = None
 
-    def habilitarRanking(self):
+    def habilitar_ranking(self):
         print("Habilitando ranking...")
 
-    def opcionGenerarRankingVinos(self):
+    def opcion_generar_ranking_vinos(self):
         # Se solicita el periodo para el ranking
-        return self.pantalla.pedirSeleccionFechas()
+        return self.pantalla.pedir_seleccion_fechas()
 
-    def obtenerInformacionVinoYReseñaEnPeriodo(self):
-        #for vino in self.listaVinos:
+    def obtener_informacion_vino_y_resenia_en_periodo(self):
+        # for vino in self.listaVinos:
         #    if vino.tenesResenaEnPeriodo(self.fechaDesde, self.fechaHasta):
         #        nombreVino = vino.getNombre()
         #        precioVino = vino.getPrecio()
@@ -39,78 +39,78 @@ class GestorRankingVinos(InterfazAgregado):
         #        if [nombreVino, precioVino,
         #            infoBodega] not in self.infoVinos:  # Check if the wine info is not already in the list
         #            self.infoVinos.append([nombreVino, precioVino, infoBodega])
-        #return self.calcularPromedioResenasEnPeriodo()
-        filtros = [self.fechaDesde, self.fechaHasta, self.tipoReportes]
-        iterador = self.crearIterador(self.listaVinos, filtros)
+        # return self.calcularPromedioResenasEnPeriodo()
+        filtros = [self.fecha_desde, self.fecha_hasta, self.tipo_reportes]
+        iterador = self.crear_iterador(self.lista_vinos, filtros)
         iterador.primero()
-        while not iterador.haTerminado():
+        while not iterador.ha_terminado():
             vinos = iterador.actual()
-            self.infoVinos.append(vinos)
+            self.info_vinos.append(vinos)
             iterador.siguiente()
-        return self.calcularPromedioResenasEnPeriodo()
+        return self.calcular_promedio_resenias_en_periodo()
 
-    def crearIterador(self, elementos: List[object], filtros: List[object]):
+    def crear_iterador(self, elementos: List[object], filtros: List[object]):
         return IteradorVinos(elementos, filtros)
 
-    def setPantalla(self, pantalla):
+    def set_pantalla(self, pantalla):
         self.pantalla = pantalla
 
-    def setVinos(self, lista_vinos):
-        self.listaVinos = lista_vinos
+    def set_vinos(self, lista_vinos):
+        self.lista_vinos = lista_vinos
 
-    def tomarSeleccionFechaDesdeyHasta(self, fechaDesde, fechaHasta):
-        self.fechaHasta = fechaHasta
-        self.fechaDesde = fechaDesde
-        return self.pantalla.solicitarTipoResena()
+    def tomar_seleccion_fecha_desde_y_hasta(self, fecha_desde, fecha_hasta):
+        self.fecha_hasta = fecha_hasta
+        self.fecha_desde = fecha_desde
+        return self.pantalla.solicitar_tipo_resenia()
 
-    def tomarSeleccionTipoResena(self, tipoReporte):
-        self.tipoReporteSeleccionado = tipoReporte
-        return self.pantalla.solicitarFormatoDelReporte()
+    def tomar_seleccion_tipo_resenia(self, tipo_reporte):
+        self.tipo_reporte_seleccionado = tipo_reporte
+        return self.pantalla.solicitar_formato_del_reporte()
 
-    def tomarFormatoDelReporte(self, tipoVisualizacion):
-        self.tipoVisualizacion = tipoVisualizacion
-        return self.pantalla.solicitarConfirmacionReporte()
+    def tomar_formato_del_reporte(self, tipo_visualizacion):
+        self.tipo_visualizacion = tipo_visualizacion
+        return self.pantalla.solicitar_confirmacion_reporte()
 
-    def setTipoReportes(self, tipos):
-        self.tipoReportes = tipos
+    def set_tipo_reportes(self, tipos):
+        self.tipo_reportes = tipos
 
-    def tomarConfirmacionReporte(self, confirmacion):
+    def tomar_confirmacion_reporte(self, confirmacion):
         self.confirmacion = confirmacion
-        return self.obtenerInformacionVinoYReseñaEnPeriodo()
+        return self.obtener_informacion_vino_y_resenia_en_periodo()
 
-    def setTipoVisualizacion(self, tipoVisualizacion):
-        self.tipoVisualizacion = tipoVisualizacion
+    def set_tipo_visualizacion(self, tipo_visualizacion):
+        self.tipo_visualizacion = tipo_visualizacion
 
-    def calcularPromedioResenasEnPeriodo(self):
-        for vino in self.listaVinos:
-            puntaje = vino.calcularPuntajeResenaEnPeriodo(self.fechaDesde, self.fechaHasta)
-            self.puntajeVinos.append(puntaje)
-        return self.ordenarVinosSegunPromedioPuntaje()
+    def calcular_promedio_resenias_en_periodo(self):
+        for vino in self.lista_vinos:
+            puntaje = vino.calcular_puntaje_resenia_en_periodo(self.fecha_desde, self.fecha_hasta)
+            self.puntaje_vinos.append(puntaje)
+        return self.ordenar_vinos_segun_promedio_puntaje()
 
-    def ordenarVinosSegunPromedioPuntaje(self):
+    def ordenar_vinos_segun_promedio_puntaje(self):
         # Ordenamos usando solo los puntajes para evitar el error de comparación
-        self.infoVinosOrdenados = [x for _, x in
-                                   sorted(zip(self.puntajeVinos, self.infoVinos), key=lambda pair: pair[0],
-                                          reverse=True)]
-        self.puntajeVinos.sort(reverse=True)
+        self.info_vinos_ordenados = [x for _, x in
+                                     sorted(zip(self.puntaje_vinos, self.info_vinos), key=lambda pair: pair[0],
+                                            reverse=True)]
+        self.puntaje_vinos.sort(reverse=True)
 
-        if self.tipoVisualizacion == "PDF":
-            return self.generarArchivoPDF(self.infoVinosOrdenados, self.puntajeVinos)
-        return self.generarArchivoExcel(self.infoVinosOrdenados, self.puntajeVinos)
+        if self.tipo_visualizacion == "PDF":
+            return self.generar_archivo_PDF(self.info_vinos_ordenados, self.puntaje_vinos)
+        return self.generar_archivo_excel(self.info_vinos_ordenados, self.puntaje_vinos)
 
-    def generarArchivoExcel(self, infoVinos, puntajeVinos):
-        self.pantallaExcel = PantallaExcel(infoVinos, puntajeVinos)
-        return self.finCU()
+    def generar_archivo_excel(self, info_vinos, puntaje_vinos):
+        self.pantalla_excel = PantallaExcel(info_vinos, puntaje_vinos)
+        return self.fin_CU()
 
-    def finCU(self):
-        if self.tipoVisualizacion == "PDF":
-            return self.pantalla.abrirPDF()
-        elif self.tipoVisualizacion == "Excel":
-            return self.pantallaExcel.abrirExcel(self.pantalla)
+    def fin_CU(self):
+        if self.tipo_visualizacion == "PDF":
+            return self.pantalla.abrir_PDF()
+        elif self.tipo_visualizacion == "Excel":
+            return self.pantalla_excel.abrir_excel(self.pantalla)
         return
 
-    def generarArchivoPDF(self, infoVinos, puntajeVinos):
-        print(infoVinos)
+    def generar_archivo_PDF(self, info_vinos, puntaje_vinos):
+        print(info_vinos)
         contador = 0
         pdf = FPDF()
         pdf.add_page()
@@ -130,23 +130,23 @@ class GestorRankingVinos(InterfazAgregado):
         pdf.cell(14, 10, txt="Puntaje", border=1)
         pdf.ln(10)
 
-        for vino in infoVinos[:10]:
+        for vino in info_vinos[:10]:
 
             print(vino)
 
             # Usar los métodos getters para acceder a los atributos
-            nombre_bodega, ubicacion_bodega, descripcion_varietal = vino.buscarInfoBodega()
+            nombre_bodega, ubicacion_bodega, descripcion_varietal = vino.buscar_info_bodega()
 
-            pdf.cell(30, 10, txt=vino.getNombre(), border=1)
-            pdf.cell(15, 10, txt=str(vino.getPrecio()), border=1)
+            pdf.cell(30, 10, txt=vino.get_nombre(), border=1)
+            pdf.cell(15, 10, txt=str(vino.get_precio()), border=1)
             pdf.cell(53, 10, txt=' ' + str(nombre_bodega), border=1)
             pdf.cell(45, 10, txt=' ' + str(ubicacion_bodega), border=1)
             pdf.cell(41, 10, txt=' ' + str(descripcion_varietal), border=1)
-            pdf.cell(14, 10, txt=str(puntajeVinos[contador]), border=1)
+            pdf.cell(14, 10, txt=str(puntaje_vinos[contador]), border=1)
             pdf.ln(10)
             contador += 1
 
         # Guardar archivo PDF
         pdf.output("ranking_vinos.pdf", "F")
         print("Archivo PDF creado exitosamente.")
-        return self.finCU()
+        return self.fin_CU()

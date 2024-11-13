@@ -1,8 +1,12 @@
-from RegionVitivinicola import RegionVitivinicola
+from Entities.RegionVitivinicola import RegionVitivinicola
 
 
 class Bodega:
     _bodegas_instance = {}
+
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._bodegas_instance.clear()
 
     def __new__(cls, id: int, nombre: str, descripcion: str, region: RegionVitivinicola):
         # Si la bodega ya existe por ID, devolver la instancia existente

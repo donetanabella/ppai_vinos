@@ -1,6 +1,10 @@
 class Pais:
     _paises_instance = {}  # Diccionario para almacenar instancias únicas de Pais
 
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._paises_instance.clear()
+
     def __new__(cls, id: int, nombre: str):
         # Si el país ya existe por ID, devolver la instancia existente
         if id in cls._paises_instance:

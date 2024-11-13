@@ -1,8 +1,12 @@
-from Provincia import Provincia
+from Entities.Provincia import Provincia
 
 
 class RegionVitivinicola:
     _regiones_instance = {}  # Diccionario para almacenar instancias únicas de RegionVitivinicola
+
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._regiones_instance.clear()
 
     def __new__(cls, id: int, nombre: str, provincia: Provincia):
         # Si la región ya existe por ID, devolver la instancia existente

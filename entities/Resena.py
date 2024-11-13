@@ -1,6 +1,5 @@
 from datetime import datetime
-
-from clases.entities import Vino
+from Entities.Vino import Vino
 
 
 class Resena:

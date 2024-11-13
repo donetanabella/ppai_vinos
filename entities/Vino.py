@@ -1,12 +1,15 @@
 from datetime import datetime
-
-from clases.entities import Bodega
-from clases.entities.Varietal import Varietal
+from Entities.Bodega import Bodega
+from Entities.Varietal import Varietal
 
 
 class Vino:
     # Diccionario para almacenar instancias únicas
     _vinos_instance = {}
+
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._vinos_instance.clear()
 
     def __new__(cls, id: int, aniada: int, nombre: str, nota_de_cata_bodega: str, precio: int, bodega: Bodega):
         # Si el vino ya existe por ID, devolver la instancia existente
@@ -101,15 +104,21 @@ class Vino:
     def calcular_puntaje_resenia_en_periodo(self, fecha_desde: datetime, fecha_hasta: datetime):
         puntaje_acumulado = 0
         contador_resenias = 0
+        promedio = 0
         for resenia in self.resenias:
             print(fecha_desde, fecha_hasta)
-            if resenia.sos_de_periodo(fecha_desde, fecha_hasta) and resenia.sos_resena_premium():
-                puntaje_acumulado += resenia.getPuntaje()
+            print(resenia.sos_resenia_premium())
+            if resenia.sos_resenia_premium() and resenia.sos_de_periodo(fecha_desde, fecha_hasta):
+                print("entro")
+                puntaje_acumulado += resenia.get_puntaje()
                 contador_resenias += 1
+                print(puntaje_acumulado)
+                print(contador_resenias)
         if contador_resenias > 0:
-            return self.calcular_promedio(contador_resenias, puntaje_acumulado)
-        return 0
+            promedio = self.calcular_promedio(contador_resenias, puntaje_acumulado)
+        return promedio
 
     def calcular_promedio(self, contador: int, puntaje_acumulado: int):
         promedio = puntaje_acumulado / contador
+        print(promedio)
         return promedio

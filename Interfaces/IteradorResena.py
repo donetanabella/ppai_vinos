@@ -1,28 +1,30 @@
 from typing import List
-from clases.InterfazIterador import InterfazIterador
+from Interfaces.InterfazIterador import InterfazIterador
+
+from Entities.Resena import Resena
 
 
 class IteradorResena(InterfazIterador):
     def __init__(self, elementos: List[object], filtros: List[object]):
-        self.posicionActual = None
+        self.posicion_actual = None
         self.elementos = elementos
         self.filtros = filtros
 
     def primero(self):
-        self.posicionActual = 0
+        self.posicion_actual = 0
 
-    def haTerminado(self):
-        return self.posicionActual == (len(self.elementos) - 1)
+    def ha_terminado(self):
+        return self.posicion_actual == (len(self.elementos) - 1)
 
     def siguiente(self):
-        self.posicionActual += 1
+        self.posicion_actual += 1
 
     def actual(self):
-        print(self.posicionActual)
-        return self.posicionActual
+        print(self.posicion_actual)
+        return self.posicion_actual
 
 
-    def cumpleFiltros(self):
+    def cumple_filtros(self):
         if self.sosDePeriodo(self.filtros[0], self.filtros[1]) and self.sosResenaPremium():
            return True
         return False

@@ -1,6 +1,5 @@
 import sqlite3
-
-from clases.entities.Pais import Pais
+from Entities.Pais import Pais
 
 
 class PaisDAO:

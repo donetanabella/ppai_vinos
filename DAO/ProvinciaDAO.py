@@ -1,7 +1,7 @@
 import sqlite3
-from PaisDAO import PaisDAO
+from DAO.PaisDAO import PaisDAO
+from Entities.Provincia import Provincia
 
-from clases.entities.Provincia import Provincia
 
 
 class ProvinciaDAO:

@@ -2,6 +2,10 @@ class Varietal:
     # Diccionario para almacenar instancias únicas de uva
     _varietal_instances = {}
 
+    @classmethod
+    def limpiar_instancias(cls):
+        cls._varietal_instances.clear()
+
     def __new__(cls, id: int, descripcion: str):
         # chequea si se creó el varietal antes
         if id in cls._varietal_instances:

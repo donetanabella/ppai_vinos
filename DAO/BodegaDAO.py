@@ -1,7 +1,6 @@
 import sqlite3
-
-from clases.DAO.RegionVitivinicolaDAO import RegionVitivinicolaDAO
-from clases.entities.Bodega import Bodega
+from DAO.RegionVitivinicolaDAO import RegionVitivinicolaDAO
+from Entities.Bodega import Bodega
 
 
 class BodegaDAO:

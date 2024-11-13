@@ -1,9 +1,8 @@
 import sqlite3
 from datetime import datetime
-
-from clases.DAO.RegionVitivinicolaDAO import RegionVitivinicolaDAO
-from clases.entities.Resena import Resena
-from clases.entities.Vino import Vino
+from DAO.RegionVitivinicolaDAO import RegionVitivinicolaDAO
+from Entities.Resena import Resena
+from Entities.Vino import Vino
 
 
 class ResenaDAO:
@@ -25,7 +24,7 @@ class ResenaDAO:
         valor_premium = False
         if row[2] == 1:
             valor_premium = True
-        fecha_resenia = datetime.strptime(row[3], "%Y%m%d")
+        fecha_resenia = datetime.strptime(row[3], "%d-%m-%Y")
 
         # Crear y retornar el objeto Bodega
-        return Resena(row[0], row[1], valor_premium, fecha_resenia, row[4], self.vino)
+        return Resena(row[0], row[1], valor_premium, fecha_resenia, row[4], vino)

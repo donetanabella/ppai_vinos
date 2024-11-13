@@ -1,26 +1,27 @@
 from typing import List
-from clases.InterfazIterador import InterfazIterador
+from Interfaces.InterfazIterador import InterfazIterador
+
 
 class IteradorVinos(InterfazIterador):
     def __init__(self, elementos: List[object], filtros: List[object]):
-        self.posicionActual = None
+        self.posicion_actual = None
         self.elementos = elementos
         self.filtros = filtros
-        
+
     def primero(self):
-        self.posicionActual = 0
-        
-    def haTerminado(self):
-        return self.posicionActual == (len(self.elementos) - 1)
-    
+        self.posicion_actual = 0
+
+    def ha_terminado(self):
+        return self.posicion_actual == (len(self.elementos) - 1)
+
     def siguiente(self):
-        self.posicionActual += 1
-        
+        self.posicion_actual += 1
+
     def actual(self):
-        print(self.posicionActual)
-        if self.elementos[self.posicionActual].tenesResenaEnPeriodo:
-            return self.elementos[self.posicionActual]
+        print(self.posicion_actual)
+        if self.elementos[self.posicion_actual].tenes_resenia_de_tipo_en_periodo:
+            return self.elementos[self.posicion_actual]
         return False
 
-    def cumpleFiltros(self, filtros):
+    def cumple_filtros(self, filtros):
         pass
