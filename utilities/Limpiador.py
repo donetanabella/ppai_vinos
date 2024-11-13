@@ -5,7 +5,7 @@ from Entities.RegionVitivinicola import RegionVitivinicola
 from Entities.Varietal import Varietal
 from Entities.Vino import Vino
 
-class Clearer:
+class Limpiador:
     @staticmethod
     def limpiar_todas_las_instancias():
         Vino.limpiar_instancias()

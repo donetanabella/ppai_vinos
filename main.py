@@ -3,11 +3,11 @@ import tkinter as tk
 from DAO.VinoDAO import VinoDAO
 from Pantallas.PantallaRankingVinos import PantallaRankingVinos
 from Gestores.GestorRankingVinos import GestorRankingVinos
-from utilities.Clearer import Clearer
+from utilities.Limpiador import Limpiador
 
 
 def main():
-    Clearer.limpiar_todas_las_instancias()
+    Limpiador.limpiar_todas_las_instancias()
     # debo tener las listas de datos
     vino_dao = VinoDAO('vinos.db')
     lista_vinos = vino_dao.cargar_todos()
